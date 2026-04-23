@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Portal</title>
+    <style>
+        body { font-family: Arial; text-align: center; background: #f0f2f5; }
+        .box { background: white; padding: 20px; display: inline-block; margin-top: 50px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        input { padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        button { padding: 8px 15px; background: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Employee Directory Ewo </h2>
+        <input type="text" id="nameInput" placeholder="Employee Name">
+        <button onclick="addName()">Add Name</button>
+        <hr>
+        <ul id="list" style="text-align: left;"></ul>
+    </div>
+
+    <script>
+        // Use the Kubernetes service name as the host
+        const API = "http://localhost:5000";
+
+        async function addName() {
+            const name = document.getElementById('nameInput').value;
+            await fetch(`${API}/add`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name: name})
+            });
+            document.getElementById('nameInput').value = '';
+            loadNames();
+        }
+
+        async function loadNames() {
+            const res = await fetch(`${API}/employees`);
+            const data = await res.json();
+            const list = document.getElementById('list');
+            list.innerHTML = data.map(e => `<li>${e.name}</li>`).join('');
+        }
+        loadNames();
+    </script>
+</body>
+</html>

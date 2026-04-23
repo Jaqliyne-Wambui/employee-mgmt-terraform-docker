@@ -1,0 +1,15 @@
+# --- Terraform Security ---
+*.tfstate
+*.tfstate.backup
+*.tfvars
+.terraform/
+.terraform.lock.hcl
+
+# --- Local Artifacts ---
+*.exe
+terraform-provider-docker*
+
+# --- Python & OS Junk ---
+**/__pycache__/
+.DS_Store
+*.swp
